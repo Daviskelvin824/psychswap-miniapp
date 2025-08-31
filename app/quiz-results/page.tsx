@@ -1,3 +1,4 @@
+"use client";
 import { mbtiToArchetype } from "@/app/data/personalityMap";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,20 +20,20 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMiniKit } from "@coinbase/onchainkit/minikit";
-
+type QuizResultsPageProps = {
+  searchParams: { [key: string]: string | undefined };
+};
 export default function QuizResultsPage({
   searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+}: QuizResultsPageProps) {
+  const mbti = searchParams.mbti?.toUpperCase();
+  const result = mbti ? mbtiToArchetype[mbti] : null;
   const { setFrameReady, isFrameReady } = useMiniKit();
   useEffect(() => {
     if (!isFrameReady) {
       setFrameReady();
     }
   }, [setFrameReady, isFrameReady]);
-  const mbti = searchParams.mbti?.toUpperCase();
-  const result = mbti ? mbtiToArchetype[mbti] : null;
 
   if (!mbti || !result) {
     return (
