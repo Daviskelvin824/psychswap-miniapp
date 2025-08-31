@@ -1,8 +1,4 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import { mbtiToArchetype } from "@/app/data/personalityMap";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -22,18 +18,13 @@ import {
   ArrowDownUp,
 } from "lucide-react";
 
-export default function QuizResultsPage() {
-  const searchParams = useSearchParams();
-  const mbti = searchParams.get("mbti")?.toUpperCase();
-  const [result, setResult] = useState<
-    (typeof mbtiToArchetype)[keyof typeof mbtiToArchetype] | null
-  >(null);
-
-  useEffect(() => {
-    if (mbti && mbtiToArchetype[mbti]) {
-      setResult(mbtiToArchetype[mbti]);
-    }
-  }, [mbti]);
+export default function QuizResultsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  const mbti = searchParams.mbti?.toUpperCase();
+  const result = mbti ? mbtiToArchetype[mbti] : null;
 
   if (!mbti || !result) {
     return (
@@ -46,7 +37,7 @@ export default function QuizResultsPage() {
             Oops! Invalid or missing MBTI type.
           </h1>
           <p className="text-gray-600 mb-6">
-            It looks like there was an issue with your quiz results. Let's get
+            It looks like there was an issue with your quiz results. Let’s get
             you back on track!
           </p>
           <Link href="/quiz/start">
@@ -61,7 +52,7 @@ export default function QuizResultsPage() {
   }
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <div className="max-w-4xl mx-auto py-12 px-6">
         {/* Header Section */}
         <div className="text-center mb-12 relative">
@@ -110,7 +101,7 @@ export default function QuizResultsPage() {
           <Card className="hover:shadow-lg hover:scale-[1.02] transition">
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12  text-black rounded-lg flex items-center justify-center mr-3">
+                <div className="w-12 h-12 text-black rounded-lg flex items-center justify-center mr-3">
                   <Zap className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-lg">
@@ -126,7 +117,7 @@ export default function QuizResultsPage() {
           <Card className="hover:shadow-lg hover:scale-[1.02] transition">
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12  text-black rounded-lg flex items-center justify-center mr-3">
+                <div className="w-12 h-12 text-black rounded-lg flex items-center justify-center mr-3">
                   <Clock className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-lg">

@@ -9,8 +9,6 @@ import {
 import { useEffect, useMemo, useState, useCallback } from "react";
 // import { Button } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
-import { Home } from "./components/DemoComponents";
-import { Features } from "./components/DemoComponents";
 import { Button } from "@/components/ui/button";
 import { Dashboard } from "./components/Dashboard";
 import Image from "next/image";
