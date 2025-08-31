@@ -17,12 +17,20 @@ import {
   ArrowRight,
   ArrowDownUp,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useMiniKit } from "@coinbase/onchainkit/minikit";
 
 export default function QuizResultsPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
+  const { setFrameReady, isFrameReady } = useMiniKit();
+  useEffect(() => {
+    if (!isFrameReady) {
+      setFrameReady();
+    }
+  }, [setFrameReady, isFrameReady]);
   const mbti = searchParams.mbti?.toUpperCase();
   const result = mbti ? mbtiToArchetype[mbti] : null;
 
