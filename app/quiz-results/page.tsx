@@ -20,13 +20,18 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMiniKit } from "@coinbase/onchainkit/minikit";
-type QuizResultsPageProps = {
-  searchParams: { [key: string]: string | undefined };
-};
+
 export default function QuizResultsPage({
   searchParams,
-}: QuizResultsPageProps) {
-  const mbti = searchParams.mbti?.toUpperCase();
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const mbti = searchParams?.mbti
+    ? Array.isArray(searchParams.mbti)
+      ? searchParams.mbti[0].toUpperCase()
+      : searchParams.mbti.toUpperCase()
+    : null;
+
   const result = mbti ? mbtiToArchetype[mbti] : null;
   const { setFrameReady, isFrameReady } = useMiniKit();
   useEffect(() => {
