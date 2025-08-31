@@ -1,0 +1,146 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Base Variables (same as globals.css) === */
+:root {
+  --main: #fd9745;
+  --overlay: rgba(0, 0, 0, 0.8);
+
+  --bg: #fff4e0;
+  --bw: #fff;
+  --blank: #000;
+  --border: #000;
+  --text: #000;
+  --mtext: #000;
+  --ring: #000;
+  --ring-offset: #fff;
+
+  --border-radius: 5px;
+  --box-shadow-x: 4px;
+  --box-shadow-y: 4px;
+  --reverse-box-shadow-x: -4px;
+  --reverse-box-shadow-y: -4px;
+  --base-font-weight: 500;
+  --heading-font-weight: 700;
+
+  --shadow: var(--box-shadow-x) var(--box-shadow-y) 0px 0px var(--border);
+}
+
+.dark {
+  --bg: #272933;
+  --bw: #212121;
+  --blank: #fff;
+  --border: #000;
+  --text: #e6e6e6;
+  --mtext: #000;
+  --ring: #fff;
+  --ring-offset: #000;
+
+  --shadow: var(--box-shadow-x) var(--box-shadow-y) 0px 0px var(--border);
+}
+
+/* === MiniApp Theme Mapping === */
+.mini-app-theme {
+  --ock-font-family: "Geist", sans-serif;
+  --ock-border-radius: 0.75rem;
+  --ock-border-radius-inner: 0.5rem;
+
+  /* Text colors */
+  --ock-text-inverse: var(--bw);
+  --ock-text-foreground: var(--text);
+  --ock-text-foreground-muted: #58585c;
+  --ock-text-error: #ef4444;
+  --ock-text-primary: var(--main);
+  --ock-text-success: #22c55e;
+  --ock-text-warning: #f59e0b;
+  --ock-text-disabled: #a1a1aa;
+
+  /* Background colors */
+  --ock-bg-default: var(--bg);
+  --ock-bg-default-hover: #f5f5f5;
+  --ock-bg-default-active: #e0e0e0;
+  --ock-bg-alternate: #f5f5f5;
+  --ock-bg-alternate-hover: #e0e0e0;
+  --ock-bg-alternate-active: #d1d1d1;
+  --ock-bg-inverse: var(--blank);
+  --ock-bg-inverse-hover: #2a2a2a;
+  --ock-bg-inverse-active: #3a3a3a;
+  --ock-bg-primary: var(--main);
+  --ock-bg-primary-hover: #e68638; /* slightly darker */
+  --ock-bg-primary-active: #cc7630;
+  --ock-bg-primary-washed: #fff4e0;
+  --ock-bg-primary-disabled: #ffbd80;
+  --ock-bg-secondary: #f5f5f5;
+  --ock-bg-secondary-hover: #e0e0e0;
+  --ock-bg-secondary-active: #d1d1d1;
+  --ock-bg-error: #fee2e2;
+  --ock-bg-warning: #fef3c7;
+  --ock-bg-success: #dcfce7;
+  --ock-bg-default-reverse: var(--text);
+
+  /* Icon colors */
+  --ock-icon-color-primary: var(--main);
+  --ock-icon-color-foreground: var(--text);
+  --ock-icon-color-foreground-muted: #71717a;
+  --ock-icon-color-inverse: var(--bw);
+  --ock-icon-color-error: #ef4444;
+  --ock-icon-color-success: #22c55e;
+  --ock-icon-color-warning: #f59e0b;
+
+  /* Line colors */
+  --ock-line-primary: var(--main);
+  --ock-line-default: #e0e0e0;
+  --ock-line-heavy: #a1a1aa;
+  --ock-line-inverse: #d4d4d8;
+}
+
+/* === Base Reset === */
+* {
+  touch-action: manipulation;
+}
+
+body {
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--font-geist-sans), sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* === Utilities === */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-fade-out {
+  animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
