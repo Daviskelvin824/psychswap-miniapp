@@ -17,7 +17,7 @@ import { useAccount } from "wagmi";
 import type { Token } from "@coinbase/onchainkit/token";
 import { useMiniKit } from "@coinbase/onchainkit/minikit";
 import { useEffect } from "react";
-
+import { color } from "@coinbase/onchainkit/theme";
 export default function SwapInterface() {
   const { address } = useAccount();
   const { setFrameReady, isFrameReady } = useMiniKit();
@@ -27,13 +27,22 @@ export default function SwapInterface() {
     }
   }, [setFrameReady, isFrameReady]);
   const ETHToken: Token = {
-    address: "",
+    address: "0x4200000000000000000000000000000000000006",
     chainId: 8453,
     decimals: 18,
     name: "Ethereum",
     symbol: "ETH",
     image:
       "https://dynamic-assets.coinbase.com/dbb4b4983bde81309ddab83eb598358eb44375b930b94687ebe38bc22e52c3b2125258ffb8477a5ef22e33d6bd72e32a506c391caa13af64c00e46613c3e5806/asset_icons/4113b082d21cc5fab17fc8f2d19fb996165bcce635e6900f7fc2d57c4ef33ae9.png",
+  };
+
+  const DegenToken: Token = {
+    address: "0x4ed4e862860bed51a9570b96d89af5e1b0efefed",
+    chainId: 8453,
+    decimals: 18,
+    name: "Degen",
+    symbol: "DEGEN",
+    image: "https://assets.coingecko.com/coins/images/33659/small/degen.png", // works fine
   };
 
   const USDCToken: Token = {
@@ -50,7 +59,7 @@ export default function SwapInterface() {
   const swappableTokens: Token[] = [ETHToken, USDCToken];
 
   return address ? (
-    <Swap title="PsychSwap">
+    <Swap title="PsychSwap" className="bg-transparent text-black">
       <SwapSettings>
         <SwapSettingsSlippageTitle>Max. slippage</SwapSettingsSlippageTitle>
         <SwapSettingsSlippageDescription>
@@ -62,19 +71,19 @@ export default function SwapInterface() {
       <SwapAmountInput
         label="Sell"
         swappableTokens={swappableTokens}
-        token={ETHToken}
+        token={DegenToken}
         type="from"
-        className="bg-white"
+        className=""
       />
-      <SwapToggleButton className="bg-white" />
+      <SwapToggleButton className="border-2 border-white" />
       <SwapAmountInput
         label="Buy"
         swappableTokens={swappableTokens}
         token={USDCToken}
         type="to"
-        className="bg-white"
+        className=""
       />
-      <SwapButton />
+      <SwapButton className="bg-orange-300" />
       <SwapMessage />
       <SwapToast />
     </Swap>
