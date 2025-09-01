@@ -27,7 +27,7 @@ export default function SwapInterface() {
     }
   }, [setFrameReady, isFrameReady]);
   const ETHToken: Token = {
-    address: "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+    address: "",
     chainId: 8453,
     decimals: 18,
     name: "Ethereum",

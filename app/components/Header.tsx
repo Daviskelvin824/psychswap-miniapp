@@ -40,7 +40,7 @@ export default function Header() {
               <Name className="text-black" />
             </ConnectWallet>
 
-            <WalletDropdown>
+            <WalletDropdown className="z-50">
               <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
                 <Avatar />
                 <Name className={color.foregroundMuted} />
