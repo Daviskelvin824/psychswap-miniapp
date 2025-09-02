@@ -44,7 +44,7 @@ export const usePsychswap = () => {
     setIsSaving(true);
 
     try {
-      await ensureBaseSepolia(); // ✅ make sure wallet is on Base Sepolia
+      // await ensureBaseSepolia(); // ✅ make sure wallet is on Base Sepolia
 
       toast.loading("Saving personality...", { id: "psychswap" });
       const hash = await writeContractAsync({
@@ -53,7 +53,7 @@ export const usePsychswap = () => {
         functionName: "savePersonality",
         args: [mbti, tokenURI],
         account: address,
-        chain: baseSepolia,
+        chain: base,
       });
 
       await waitForTransactionReceipt(config, { hash });

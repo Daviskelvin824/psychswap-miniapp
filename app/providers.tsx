@@ -15,7 +15,7 @@ export function Providers(props: { children: ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <MiniKitProvider
           apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-          chain={baseSepolia}
+          chain={base}
           config={{
             appearance: {
               mode: "auto",
@@ -27,7 +27,7 @@ export function Providers(props: { children: ReactNode }) {
         >
           <OnchainKitProvider
             apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY!}
-            chain={baseSepolia}
+            chain={base}
           >
             {props.children}
           </OnchainKitProvider>
