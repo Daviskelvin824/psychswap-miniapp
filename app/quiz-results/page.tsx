@@ -21,7 +21,7 @@ import {
   ArrowDownUp,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useMiniKit } from "@coinbase/onchainkit/minikit";
+import { useComposeCast, useMiniKit } from "@coinbase/onchainkit/minikit";
 import { usePsychswap } from "../hooks/usePsychSwap";
 import { useRouter } from "next/navigation";
 
@@ -42,25 +42,30 @@ export default function QuizResultsPage({
   const { savePersonality, isSaving } = usePsychswap();
   const router = useRouter();
   const { setFrameReady, isFrameReady } = useMiniKit();
+  const { composeCast } = useComposeCast();
   useEffect(() => {
     if (!isFrameReady) {
       setFrameReady();
     }
   }, [setFrameReady, isFrameReady]);
-  const handleSaveAndSwap = async () => {
+  const handleSaveAndSwap = async (mbti: string) => {
     try {
-      const formData = new FormData();
-      formData.append("mbti", mbti!);
-      formData.append("name", result.name);
-      formData.append("description", result.description);
+      const archetype = mbtiToArchetype[mbti];
 
-      const response = await fetch(result.imagePath || "/placeholder.png");
+      const formData = new FormData();
+      formData.append("mbti", mbti);
+      formData.append("name", archetype.name);
+      formData.append("description", archetype.description);
+
+      // fetch image from public folder
+      const response = await fetch(archetype.imagePath || "/placeholder.png");
       const blob = await response.blob();
       formData.append(
         "image",
         new File([blob], `${mbti}.png`, { type: blob.type }),
       );
 
+      // upload to Pinata
       const res = await fetch("/api/uploadToIPFS", {
         method: "POST",
         body: formData,
@@ -69,9 +74,9 @@ export default function QuizResultsPage({
       const data = await res.json();
       if (!data.uri) throw new Error("IPFS upload failed");
 
-      const ok = await savePersonality(mbti!, data.uri);
+      // save to contract
+      const ok = await savePersonality(mbti, data.uri);
 
-      // ✅ Redirect only after isSaving is done and tx confirmed
       if (ok) {
         router.push("/swap");
       }
@@ -104,7 +109,18 @@ export default function QuizResultsPage({
       </div>
     );
   }
-
+  const handleShare = async () => {
+    try {
+      const imageUrl = `${window.location.origin}${result.imagePath}`;
+      await composeCast({
+        text: `I just discovered my personality type: ${mbti} → ${result.name}! 🚀
+Take the test and see yours 👇`,
+        embeds: [imageUrl],
+      });
+    } catch (err) {
+      console.error("Cast share failed:", err);
+    }
+  };
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl mx-auto py-12 px-6">
@@ -210,7 +226,7 @@ export default function QuizResultsPage({
             <Button
               size="lg"
               className="w-full border-2 hover:bg-gray-100"
-              onClick={handleSaveAndSwap}
+              onClick={() => handleSaveAndSwap(mbti)}
               disabled={isSaving}
             >
               <ArrowDownUp />
@@ -225,28 +241,20 @@ export default function QuizResultsPage({
             </Button>
           </Link>
         </div>
-        <div className="flex flex-col gap-4 justify-center mt-5">
+        <div className="flex flex-col justify-center mt-5">
           <Link href="/swap" className="w-full sm:flex-1">
             <Button
               size="lg"
               className="w-full border-1 bg-purple-400 shadow-purple-100 text-white"
+              onClick={handleShare}
             >
               <SiFarcaster /> Share on Farcaster
-            </Button>
-          </Link>
-
-          <Link
-            href={`https://twitter.com/intent/tweet?text=I got ${mbti} archetype 🚀 What's yours?&url=https://pyschswap.vercel.app/quiz/results?mbti=${mbti}`}
-            target="_blank"
-          >
-            <Button size="lg" className="w-full bg-black text-white">
-              <FaXTwitter className="mr-2" /> Share on X
             </Button>
           </Link>
         </div>
 
         {/* Footer Message */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-10">
           <p className="text-gray-500 text-sm">
             Your personality type guides your trading journey 🚀 Always do your
             own research before making decisions!

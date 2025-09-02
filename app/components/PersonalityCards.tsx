@@ -20,15 +20,16 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
+import toast from "react-hot-toast";
 import { mbtiToArchetype } from "@/app/data/personalityMap";
 import { ExternalLink, Save } from "lucide-react";
 import { usePsychswap } from "../hooks/usePsychSwap";
+import { useComposeCast } from "@coinbase/onchainkit/minikit";
 
 export default function PersonalityCarousel() {
   const router = useRouter();
-  const { savePersonality, isSaving } = usePsychswap();
-
+  const { savePersonality, isSaving, myPersonality } = usePsychswap();
+  const { composeCast } = useComposeCast();
   const handleSaveAndSwap = async (mbti: string) => {
     try {
       const archetype = mbtiToArchetype[mbti];
@@ -65,7 +66,22 @@ export default function PersonalityCarousel() {
       console.error("Save & Swap failed:", err);
     }
   };
-
+  const handleShare = async (mbti: string) => {
+    if (!myPersonality) {
+      toast.error("You need to save a personality before you can share!");
+      return;
+    }
+    try {
+      const imageUrl = `${window.location.origin}${mbtiToArchetype[mbti].imagePath}`;
+      await composeCast({
+        text: `I just discovered my personality type: ${mbti} → ${mbtiToArchetype[mbti].name}! 🚀
+Take the test and see yours 👇`,
+        embeds: [imageUrl],
+      });
+    } catch (err) {
+      console.error("Cast share failed:", err);
+    }
+  };
   return (
     <main className="px-4 sm:px-10">
       <Carousel className="w-full max-w-72 mx-auto">
@@ -118,7 +134,10 @@ export default function PersonalityCarousel() {
                     <Save className="w-4 h-4" />
                     {isSaving ? "Saving..." : "Save"}
                   </Button>
-                  <Button className="flex-1 flex items-center gap-2">
+                  <Button
+                    className="flex-1 flex items-center gap-2"
+                    onClick={() => handleShare(mbti)}
+                  >
                     <ExternalLink className="w-4 h-4" />
                     Share
                   </Button>

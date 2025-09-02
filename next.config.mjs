@@ -9,6 +9,16 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // <- this disables ESLint checks during build
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "assets.coingecko.com",
+        port: "",
+        pathname: "/coins/images/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
