@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -21,9 +22,50 @@ import {
 } from "@/components/ui/carousel";
 
 import { mbtiToArchetype } from "@/app/data/personalityMap";
-import { ArrowDownUp, ExternalLink } from "lucide-react";
+import { ExternalLink, Save } from "lucide-react";
+import { usePsychswap } from "../hooks/usePsychSwap";
 
 export default function PersonalityCarousel() {
+  const router = useRouter();
+  const { savePersonality, isSaving } = usePsychswap();
+
+  const handleSaveAndSwap = async (mbti: string) => {
+    try {
+      const archetype = mbtiToArchetype[mbti];
+
+      const formData = new FormData();
+      formData.append("mbti", mbti);
+      formData.append("name", archetype.name);
+      formData.append("description", archetype.description);
+
+      // fetch image from public folder
+      const response = await fetch(archetype.imagePath || "/placeholder.png");
+      const blob = await response.blob();
+      formData.append(
+        "image",
+        new File([blob], `${mbti}.png`, { type: blob.type }),
+      );
+
+      // upload to Pinata
+      const res = await fetch("/api/uploadToIPFS", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!data.uri) throw new Error("IPFS upload failed");
+
+      // save to contract
+      const ok = await savePersonality(mbti, data.uri);
+
+      if (ok) {
+        router.push("/swap");
+      }
+    } catch (err) {
+      console.error("Save & Swap failed:", err);
+    }
+  };
+
   return (
     <main className="px-4 sm:px-10">
       <Carousel className="w-full max-w-72 mx-auto">
@@ -68,9 +110,13 @@ export default function PersonalityCarousel() {
 
                 {/* Footer */}
                 <CardFooter className="flex gap-3 mt-10">
-                  <Button className="flex-1 flex items-center gap-2">
-                    <ArrowDownUp className="w-4 h-4" />
-                    Swap
+                  <Button
+                    className="flex-1 flex items-center gap-2"
+                    onClick={() => handleSaveAndSwap(mbti)}
+                    disabled={isSaving}
+                  >
+                    <Save className="w-4 h-4" />
+                    {isSaving ? "Saving..." : "Save"}
                   </Button>
                   <Button className="flex-1 flex items-center gap-2">
                     <ExternalLink className="w-4 h-4" />

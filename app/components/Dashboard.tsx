@@ -19,6 +19,7 @@ type DashboardProps = {
 
 export function Dashboard({ setActiveTab }: DashboardProps) {
   const router = useRouter();
+
   const [open, setOpen] = useState(false);
   return (
     <div className="space-y-6 animate-fade-in">
@@ -34,6 +35,7 @@ export function Dashboard({ setActiveTab }: DashboardProps) {
           <BookOpen size={20} className="text-black" /> Take a Test
         </Button>
       </div>
+      <h1 className="text-2xl font-semibold">Your Personality</h1>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="w-full max-w-md rounded-2xl sm:rounded-3xl p-6">
           <DialogHeader>

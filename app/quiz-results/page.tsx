@@ -1,4 +1,6 @@
 "use client";
+
+import { use } from "react"; // 👈 import use()
 import { mbtiToArchetype } from "@/app/data/personalityMap";
 import Link from "next/link";
 import Image from "next/image";
@@ -20,12 +22,16 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMiniKit } from "@coinbase/onchainkit/minikit";
+import { usePsychswap } from "../hooks/usePsychSwap";
+import { useRouter } from "next/navigation";
 
 export default function QuizResultsPage({
-  searchParams,
+  searchParams: searchParamsPromise,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  // ✅ unwrap the promise
+  const searchParams = use(searchParamsPromise);
   const mbti = searchParams?.mbti
     ? Array.isArray(searchParams.mbti)
       ? searchParams.mbti[0].toUpperCase()
@@ -33,12 +39,46 @@ export default function QuizResultsPage({
     : null;
 
   const result = mbti ? mbtiToArchetype[mbti] : null;
+  const { savePersonality, isSaving } = usePsychswap();
+  const router = useRouter();
   const { setFrameReady, isFrameReady } = useMiniKit();
   useEffect(() => {
     if (!isFrameReady) {
       setFrameReady();
     }
   }, [setFrameReady, isFrameReady]);
+  const handleSaveAndSwap = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("mbti", mbti!);
+      formData.append("name", result.name);
+      formData.append("description", result.description);
+
+      const response = await fetch(result.imagePath || "/placeholder.png");
+      const blob = await response.blob();
+      formData.append(
+        "image",
+        new File([blob], `${mbti}.png`, { type: blob.type }),
+      );
+
+      const res = await fetch("/api/uploadToIPFS", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!data.uri) throw new Error("IPFS upload failed");
+
+      const ok = await savePersonality(mbti!, data.uri);
+
+      // ✅ Redirect only after isSaving is done and tx confirmed
+      if (ok) {
+        router.push("/swap");
+      }
+    } catch (err) {
+      console.error("Save & Swap failed:", err);
+    }
+  };
 
   if (!mbti || !result) {
     return (
@@ -167,13 +207,18 @@ export default function QuizResultsPage({
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
           <Link href="/swap" className="w-full sm:flex-1">
-            <Button size="lg" className="w-full border-2 hover:bg-gray-100">
-              <ArrowDownUp className="w-5 h-5 ml-2" />
-              Save & Swap
+            <Button
+              size="lg"
+              className="w-full border-2 hover:bg-gray-100"
+              onClick={handleSaveAndSwap}
+              disabled={isSaving}
+            >
+              <ArrowDownUp />
+              {isSaving ? "Saving on chain..." : "Save & Swap"}
             </Button>
           </Link>
 
-          <Link href="/quiz/start" className="w-full sm:flex-1">
+          <Link href="/quiz" className="w-full sm:flex-1">
             <Button size="lg" className="w-full border-2 hover:bg-gray-100">
               <RefreshCw className="w-5 h-5 mr-2" />
               Retake Quiz
@@ -190,13 +235,12 @@ export default function QuizResultsPage({
             </Button>
           </Link>
 
-          <Link href="/quiz/start" className="w-full sm:flex-1">
-            <Button
-              size="lg"
-              className="w-full bg-black text-white border-1 shadow-none"
-            >
-              <FaXTwitter />
-              Share on X
+          <Link
+            href={`https://twitter.com/intent/tweet?text=I got ${mbti} archetype 🚀 What's yours?&url=https://pyschswap.vercel.app/quiz/results?mbti=${mbti}`}
+            target="_blank"
+          >
+            <Button size="lg" className="w-full bg-black text-white">
+              <FaXTwitter className="mr-2" /> Share on X
             </Button>
           </Link>
         </div>

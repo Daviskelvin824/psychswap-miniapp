@@ -1,0 +1,7 @@
+import PSYCHSWAP_JSON from "./PSYCHSWAP_ABI.json";
+
+export const PSYCHSWAP_ABI = PSYCHSWAP_JSON;
+
+export const CONTRACTS = {
+  PSYCHSWAP: "0x45b743553560935Ff9806dd8d4276B9d61ccC7E4",
+} as const;
