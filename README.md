@@ -1,112 +1,72 @@
-# MiniKit Template
+<p align="center">
+  <img src="public/psychswap-icon.png" alt="PsychSwap Logo" width="120" />
+</p>
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-onchain --mini`](), configured with:
+# PsychSwap
 
-- [MiniKit](https://docs.base.org/builderkits/minikit/overview)
-- [OnchainKit](https://www.base.org/builders/onchainkit)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Next.js](https://nextjs.org/docs)
+Live Mainnet Contract: 0xE60EceE25CEC5deA5283BC00B31f7EAb102320f4
 
-## Getting Started
+## Description
 
-1. Install dependencies:
+Personality Swap transforms personality tests into digital identities on-chain.  
+Instead of static results that get forgotten, your MBTI type becomes a composable ERC-721 token that you can **save, share, and swap**.
+
+## Problem
+
+In the fast-moving world of crypto, social apps, and trends, people often make rushed decisions out of fear of missing out (FOMO).  
+This leads to impulsive trades, wasted time, and regret over choices that weren’t aligned with their real personality or goals.  
+There’s no fun, interactive way for people to explore their decision-making style while learning to resist FOMO.
+
+---
+
+## Solution
+
+Personality Swap turns decision-making into a self-aware, gamified experience.  
+Instead of following hype, users can:
+
+- Discover their MBTI archetype and how it relates to risk behavior
+- Save their personality onchain as an NFT — a permanent reminder of who they are
+- Share their identity socially in a transparent way, instead of chasing trends
+- Use personality insights as a tool to slow down, reflect, and avoid FOMO
+
+This creates a playful but powerful method for making choices safer, more intentional, and less reactive.
+
+## Features
+
+- 🔗 Own your personality as an NFT that lives on **Base Sepolia testnet**
+- 📤 Share your results directly on **Farcaster** with one click
+- ⚡ Explore archetypes with **risk levels** (low, medium, high) for better insights
+- 🔄 Swap or trade MBTI tokens to experiment with different perspectives
+- 🌐 Interoperable across dApps, games, or social platforms
+
+## How It Works
+
+1. Connect your wallet
+2. Take the personality test or choose your MBTI type
+3. Save your result on-chain with a single click
+4. Share it instantly to Farcaster
+5. Swap or trade your personality with others to explore new archetypes
+
+## Tech Stack
+
+- **Next.js (App Router)**
+- **TailwindCSS + shadcn/ui** for styling
+- **wagmi + viem** for on-chain interactions
+- **Coinbase OnchainKit** for wallet, identity, and social
+- **IPFS via Pinata** for decentralized storage
+
+## Local Development
+
 ```bash
+# 1. Clone the repo
+git clone https://github.com/your-username/personality-swap.git
+
+# 2. Install dependencies
 npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
-```
 
-2. Verify environment variables, these will be set up by the `npx create-onchain --mini` command:
+# 3. Set up environment variables
+cp .env.example .env.local
 
-You can regenerate the FARCASTER Account Association environment variables by running `npx create-onchain --manifest` in your project directory.
-
-The environment variables enable the following features:
-
-- Frame metadata - Sets up the Frame Embed that will be shown when you cast your frame
-- Account association - Allows users to add your frame to their account, enables notifications
-- Redis API keys - Enable Webhooks and background notifications for your application by storing users notification details
-
-```bash
-# Shared/OnchainKit variables
-NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=
-NEXT_PUBLIC_URL=
-NEXT_PUBLIC_ICON_URL=
-NEXT_PUBLIC_ONCHAINKIT_API_KEY=
-
-# Frame metadata
-FARCASTER_HEADER=
-FARCASTER_PAYLOAD=
-FARCASTER_SIGNATURE=
-NEXT_PUBLIC_APP_ICON=
-NEXT_PUBLIC_APP_SUBTITLE=
-NEXT_PUBLIC_APP_DESCRIPTION=
-NEXT_PUBLIC_APP_SPLASH_IMAGE=
-NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR=
-NEXT_PUBLIC_APP_PRIMARY_CATEGORY=
-NEXT_PUBLIC_APP_HERO_IMAGE=
-NEXT_PUBLIC_APP_TAGLINE=
-NEXT_PUBLIC_APP_OG_TITLE=
-NEXT_PUBLIC_APP_OG_DESCRIPTION=
-NEXT_PUBLIC_APP_OG_IMAGE=
-
-# Redis config
-REDIS_URL=
-REDIS_TOKEN=
-```
-
-3. Start the development server:
-```bash
+# 4. Run the development server
 npm run dev
 ```
-
-## Template Features
-
-### Frame Configuration
-- `.well-known/farcaster.json` endpoint configured for Frame metadata and account association
-- Frame metadata automatically added to page headers in `layout.tsx`
-
-### Background Notifications
-- Redis-backed notification system using Upstash
-- Ready-to-use notification endpoints in `api/notify` and `api/webhook`
-- Notification client utilities in `lib/notification-client.ts`
-
-### Theming
-- Custom theme defined in `theme.css` with OnchainKit variables
-- Pixel font integration with Pixelify Sans
-- Dark/light mode support through OnchainKit
-
-### MiniKit Provider
-The app is wrapped with `MiniKitProvider` in `providers.tsx`, configured with:
-- OnchainKit integration
-- Access to Frames context
-- Sets up Wagmi Connectors
-- Sets up Frame SDK listeners
-- Applies Safe Area Insets
-
-## Customization
-
-To get started building your own frame, follow these steps:
-
-1. Remove the DemoComponents:
-   - Delete `components/DemoComponents.tsx`
-   - Remove demo-related imports from `page.tsx`
-
-2. Start building your Frame:
-   - Modify `page.tsx` to create your Frame UI
-   - Update theme variables in `theme.css`
-   - Adjust MiniKit configuration in `providers.tsx`
-
-3. Add your frame to your account:
-   - Cast your frame to see it in action
-   - Share your frame with others to start building your community
-
-## Learn More
-
-- [MiniKit Documentation](https://docs.base.org/builderkits/minikit/overview)
-- [OnchainKit Documentation](https://docs.base.org/builderkits/onchainkit/getting-started)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
