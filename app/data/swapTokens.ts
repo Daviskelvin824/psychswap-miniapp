@@ -12,6 +12,15 @@ export const tokens: Token[] = [
       "https://wallet-api-production.s3.amazonaws.com/uploads/tokens/eth_288.png",
   },
 
+  {
+    address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    chainId: 8453,
+    decimals: 6,
+    name: "USD Coin",
+    symbol: "USDC",
+    image:
+      "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png",
+  },
   // Core Wrapped Assets
   {
     address: "0x4200000000000000000000000000000000000006",
@@ -20,6 +29,23 @@ export const tokens: Token[] = [
     name: "Wrapped Ether",
     symbol: "WETH",
     image: "https://assets.coingecko.com/coins/images/2518/small/weth.png",
+  },
+  {
+    address: "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2",
+    chainId: 8453,
+    decimals: 6,
+    name: "Tether USD",
+    symbol: "USDT",
+    image:
+      "https://assets.coingecko.com/coins/images/325/small/Tether-logo.png",
+  },
+  {
+    address: "0x940181a94A35A4569E4529A3CDfB74e38FD98631",
+    chainId: 8453,
+    decimals: 18,
+    name: "Aerodrome Finance",
+    symbol: "AERO",
+    image: "https://assets.coingecko.com/coins/images/31745/small/token.png",
   },
   {
     address: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
@@ -33,24 +59,6 @@ export const tokens: Token[] = [
 
   // Stablecoins
   {
-    address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-    chainId: 8453,
-    decimals: 6,
-    name: "USD Coin",
-    symbol: "USDC",
-    image:
-      "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png",
-  },
-  {
-    address: "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2",
-    chainId: 8453,
-    decimals: 6,
-    name: "Tether USD",
-    symbol: "USDT",
-    image:
-      "https://assets.coingecko.com/coins/images/325/small/Tether-logo.png",
-  },
-  {
     address: "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
     chainId: 8453,
     decimals: 18,
@@ -58,7 +66,30 @@ export const tokens: Token[] = [
     symbol: "DAI",
     image: "https://assets.coingecko.com/coins/images/9956/small/Badge_Dai.png",
   },
-
+  {
+    address: "0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b",
+    chainId: 8453,
+    decimals: 18,
+    name: "Virtuals Protocol",
+    symbol: "VIRTUAL",
+    image: "https://assets.coingecko.com/coins/images/31669/small/virtuals.png",
+  },
+  {
+    address: "0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842",
+    chainId: 8453,
+    decimals: 18,
+    name: "Morpho",
+    symbol: "MORPHO",
+    image: "https://assets.coingecko.com/coins/images/31170/small/morpho.png",
+  },
+  {
+    address: "0x4ed4E862860beD51a9570b96d89aF5E1b0Efefed",
+    chainId: 8453,
+    decimals: 18,
+    name: "Degen",
+    symbol: "DEGEN",
+    image: "https://assets.coingecko.com/coins/images/34515/small/degen.png",
+  },
   // Liquid Staking Tokens
   {
     address: "0x2Ae3F1Ec7F1F5012CFEAb0185bfc7aa3cf0DEc22",
@@ -78,22 +109,6 @@ export const tokens: Token[] = [
   },
 
   // Base Ecosystem Tokens
-  {
-    address: "0x940181a94A35A4569E4529A3CDfB74e38FD98631",
-    chainId: 8453,
-    decimals: 18,
-    name: "Aerodrome Finance",
-    symbol: "AERO",
-    image: "https://assets.coingecko.com/coins/images/31745/small/token.png",
-  },
-  {
-    address: "0x4ed4E862860beD51a9570b96d89aF5E1b0Efefed",
-    chainId: 8453,
-    decimals: 18,
-    name: "Degen",
-    symbol: "DEGEN",
-    image: "https://assets.coingecko.com/coins/images/34515/small/degen.png",
-  },
   {
     address: "0x532f27101965dd16442689E3a1fc06116506d35A",
     chainId: 8453,
@@ -155,22 +170,6 @@ export const tokens: Token[] = [
     symbol: "UNI",
     image:
       "https://assets.coingecko.com/coins/images/12504/small/uniswap-uni.png",
-  },
-  {
-    address: "0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842",
-    chainId: 8453,
-    decimals: 18,
-    name: "Morpho",
-    symbol: "MORPHO",
-    image: "https://assets.coingecko.com/coins/images/31170/small/morpho.png",
-  },
-  {
-    address: "0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b",
-    chainId: 8453,
-    decimals: 18,
-    name: "Virtuals Protocol",
-    symbol: "VIRTUAL",
-    image: "https://assets.coingecko.com/coins/images/31669/small/virtuals.png",
   },
 
   // Additional stablecoins and wrapped assets
