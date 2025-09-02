@@ -222,17 +222,15 @@ Take the test and see yours 👇`,
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-          <Link href="/swap" className="w-full sm:flex-1">
-            <Button
-              size="lg"
-              className="w-full border-2 hover:bg-gray-100"
-              onClick={() => handleSaveAndSwap(mbti)}
-              disabled={isSaving}
-            >
-              <ArrowDownUp />
-              {isSaving ? "Saving on chain..." : "Save & Swap"}
-            </Button>
-          </Link>
+          <Button
+            size="lg"
+            className="w-full border-2 hover:bg-gray-100"
+            onClick={() => handleSaveAndSwap(mbti)}
+            disabled={isSaving}
+          >
+            <ArrowDownUp />
+            {isSaving ? "Saving on chain..." : "Save & Swap"}
+          </Button>
 
           <Link href="/quiz" className="w-full sm:flex-1">
             <Button size="lg" className="w-full border-2 hover:bg-gray-100">
@@ -242,15 +240,13 @@ Take the test and see yours 👇`,
           </Link>
         </div>
         <div className="flex flex-col justify-center mt-5">
-          <Link href="/swap" className="w-full sm:flex-1">
-            <Button
-              size="lg"
-              className="w-full border-1 bg-purple-400 shadow-purple-100 text-white"
-              onClick={handleShare}
-            >
-              <SiFarcaster /> Share on Farcaster
-            </Button>
-          </Link>
+          <Button
+            size="lg"
+            className="w-full border-1 bg-purple-400 shadow-purple-100 text-white"
+            onClick={handleShare}
+          >
+            <SiFarcaster /> Share on Farcaster
+          </Button>
         </div>
 
         {/* Footer Message */}
