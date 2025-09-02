@@ -114,7 +114,7 @@ export default function QuizResultsPage({
       const imageUrl = `${window.location.origin}${result.imagePath}`;
       await composeCast({
         text: `I just discovered my personality type: ${mbti} → ${result.name}! 🚀
-Take the test and see yours 👇`,
+Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/psychswap`,
         embeds: [imageUrl],
       });
     } catch (err) {

@@ -75,7 +75,7 @@ export default function PersonalityCarousel() {
       const imageUrl = `${window.location.origin}${mbtiToArchetype[mbti].imagePath}`;
       await composeCast({
         text: `I just discovered my personality type: ${mbti} → ${mbtiToArchetype[mbti].name}! 🚀
-Take the test and see yours 👇`,
+Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/psychswap`,
         embeds: [imageUrl],
       });
     } catch (err) {
