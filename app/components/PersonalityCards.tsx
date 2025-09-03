@@ -24,10 +24,12 @@ import toast from "react-hot-toast";
 import { mbtiToArchetype } from "@/app/data/personalityMap";
 import { ExternalLink, Save } from "lucide-react";
 import { usePsychswap } from "../hooks/usePsychSwap";
-import { useComposeCast } from "@coinbase/onchainkit/minikit";
+import { useComposeCast, useOpenUrl } from "@coinbase/onchainkit/minikit";
+import { SiFarcaster, SiX } from "react-icons/si";
 
 export default function PersonalityCarousel() {
   const router = useRouter();
+  const openUrl = useOpenUrl();
   const { savePersonality, isSaving, myPersonality } = usePsychswap();
   const { composeCast } = useComposeCast();
   const handleSaveAndSwap = async (mbti: string) => {
@@ -82,6 +84,23 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
       console.error("Cast share failed:", err);
     }
   };
+
+  const handleShareOnX = (mbti: string) => {
+    const archetype = mbtiToArchetype[mbti];
+
+    const text = encodeURIComponent(
+      `I just discovered my personality type: ${mbti} → ${archetype.name}! 🚀
+  Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/psychswap`,
+    );
+
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+
+    // ✅ Open inside Farcaster Mini App (preferred)
+    openUrl(url);
+
+    // or fallback if not inside Farcaster
+    // window.open(url, "_blank");
+  };
   return (
     <main className="px-4 sm:px-10">
       <Carousel className="w-full max-w-72 mx-auto">
@@ -125,21 +144,29 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
                 </CardContent>
 
                 {/* Footer */}
-                <CardFooter className="flex gap-3 mt-10">
+                <CardFooter className="flex flex-col gap-3 mt-10">
+                  <div className="flex gap-3 w-full ">
+                    <Button
+                      className="w-full flex-1 flex items-center gap-2"
+                      onClick={() => handleSaveAndSwap(mbti)}
+                      disabled={isSaving}
+                    >
+                      <Save className="w-4 h-4" />
+                      {isSaving ? "Saving..." : "Save"}
+                    </Button>
+
+                    <Button
+                      className="w-full flex-1 border-1 bg-purple-400  text-white"
+                      onClick={() => handleShare(mbti)}
+                    >
+                      <SiFarcaster /> Cast
+                    </Button>
+                  </div>
                   <Button
-                    className="flex-1 flex items-center gap-2"
-                    onClick={() => handleSaveAndSwap(mbti)}
-                    disabled={isSaving}
+                    onClick={() => handleShareOnX(myPersonality)}
+                    className="w-full border-1 bg-black  text-white px-10"
                   >
-                    <Save className="w-4 h-4" />
-                    {isSaving ? "Saving..." : "Save"}
-                  </Button>
-                  <Button
-                    className="flex-1 flex items-center gap-2"
-                    onClick={() => handleShare(mbti)}
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Share
+                    <SiX /> Share on X
                   </Button>
                 </CardFooter>
               </Card>

@@ -19,9 +19,11 @@ import { usePsychswap } from "@/app/hooks/usePsychSwap";
 import { ConnectWallet } from "@coinbase/onchainkit/wallet";
 import { Avatar } from "@coinbase/onchainkit/identity";
 import { useRouter } from "next/navigation";
-import { useComposeCast } from "@coinbase/onchainkit/minikit";
+import { useComposeCast, useOpenUrl } from "@coinbase/onchainkit/minikit";
+import { SiFarcaster, SiX } from "react-icons/si";
 export default function DashboardCards() {
   const { isConnected } = useAccount();
+  const openUrl = useOpenUrl();
   const { myPersonality, isPersonalityLoading, savePersonality, isSaving } =
     usePsychswap();
   const router = useRouter();
@@ -88,6 +90,23 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
     }
   };
 
+  const handleShareOnX = (mbti: string) => {
+    const archetype = mbtiToArchetype[mbti];
+
+    const text = encodeURIComponent(
+      `I just discovered my personality type: ${mbti} → ${archetype.name}! 🚀
+Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/psychswap`,
+    );
+
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+
+    // ✅ Open inside Farcaster Mini App (preferred)
+    openUrl(url);
+
+    // or fallback if not inside Farcaster
+    // window.open(url, "_blank");
+  };
+
   return (
     <main>
       <Card className="w-full max-w-md mx-auto flex flex-col bg-white shadow-lg rounded-xl hover:shadow-2xl transition-shadow duration-300 relative">
@@ -129,16 +148,27 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
         </CardContent>
 
         {/* Footer Buttons */}
-        <CardFooter className="flex gap-3 px-6 pb-6 mt-auto">
+        <CardFooter className="flex flex-col gap-4 px-6 pb-6 ">
+          <div className="flex gap-3 w-full pr-2">
+            <Button
+              className="flex-1 w-1/2"
+              disabled={isSaving}
+              onClick={() => router.push("/swap")}
+            >
+              <ArrowDownUp /> Start Swapping
+            </Button>
+            <Button
+              onClick={handleShare}
+              className="flex-1 w-1/2 border-1 bg-purple-400  text-white"
+            >
+              <SiFarcaster /> Cast on Farcaster
+            </Button>
+          </div>
           <Button
-            className="flex-1"
-            disabled={isSaving}
-            onClick={() => router.push("/swap")}
+            onClick={() => handleShareOnX(myPersonality)}
+            className="w-full border-1 bg-black  text-white px-10"
           >
-            <ArrowDownUp /> Start Swapping
-          </Button>
-          <Button className="flex-1" onClick={handleShare}>
-            <ExternalLink /> Share
+            <SiX /> Share on X
           </Button>
         </CardFooter>
       </Card>

@@ -14,7 +14,11 @@ import {
 } from "@coinbase/onchainkit/swap";
 import { Wallet, ConnectWallet } from "@coinbase/onchainkit/wallet";
 import { useAccount } from "wagmi";
-import { useMiniKit } from "@coinbase/onchainkit/minikit";
+import {
+  useComposeCast,
+  useMiniKit,
+  useOpenUrl,
+} from "@coinbase/onchainkit/minikit";
 import { useEffect } from "react";
 import { mbtiToArchetype } from "@/app/data/personalityMap";
 import { BookOpen, User, UserPlus } from "lucide-react";
@@ -30,12 +34,15 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { SiFarcaster, SiX } from "react-icons/si";
 
 export default function SwapInterface() {
   const { address } = useAccount();
   const { myPersonality, isPersonalityLoading } = usePsychswap();
   const { setFrameReady, isFrameReady } = useMiniKit();
   const router = useRouter();
+  const openUrl = useOpenUrl();
+  const { composeCast } = useComposeCast();
   useEffect(() => {
     if (!isFrameReady) {
       setFrameReady();
@@ -55,6 +62,36 @@ export default function SwapInterface() {
     archetype && Array.isArray(archetype.tokens)
       ? tokens.filter((token) => archetype.tokens.includes(token.symbol))
       : [];
+
+  const handleShare = async () => {
+    try {
+      const imageUrl = `${window.location.origin}${archetype.imagePath}`;
+      await composeCast({
+        text: `I just discovered my personality type: ${myPersonality} → ${archetype.name}! 🚀
+Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/psychswap`,
+        embeds: [imageUrl],
+      });
+    } catch (err) {
+      console.error("Cast share failed:", err);
+    }
+  };
+
+  const handleShareOnX = (mbti: string) => {
+    const archetype = mbtiToArchetype[mbti];
+
+    const text = encodeURIComponent(
+      `I just discovered my personality type: ${mbti} → ${archetype.name}! 🚀
+  Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/psychswap`,
+    );
+
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+
+    // ✅ Open inside Farcaster Mini App (preferred)
+    openUrl(url);
+
+    // or fallback if not inside Farcaster
+    // window.open(url, "_blank");
+  };
 
   return address ? (
     <main className="mt-10">
@@ -149,6 +186,22 @@ export default function SwapInterface() {
                     ))}
                   </div>
                 )}
+                <div className="flex flex-col gap-3 justify-center mt-5">
+                  <Button
+                    size="lg"
+                    className="w-full border-1 bg-purple-400  text-white"
+                    onClick={handleShare}
+                  >
+                    <SiFarcaster /> Cast on Farcaster
+                  </Button>
+                  <Button
+                    size="lg"
+                    className="w-full border-1 bg-black text-white"
+                    onClick={() => handleShareOnX(myPersonality)}
+                  >
+                    <SiX /> Share on X
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ) : (

@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { SiFarcaster } from "react-icons/si";
+import { SiFarcaster, SiX } from "react-icons/si";
 import { FaXTwitter } from "react-icons/fa6";
 import {
   TrendingUp,
@@ -21,7 +21,11 @@ import {
   ArrowDownUp,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useComposeCast, useMiniKit } from "@coinbase/onchainkit/minikit";
+import {
+  useComposeCast,
+  useMiniKit,
+  useOpenUrl,
+} from "@coinbase/onchainkit/minikit";
 import { usePsychswap } from "../hooks/usePsychSwap";
 import { useRouter } from "next/navigation";
 
@@ -37,7 +41,7 @@ export default function QuizResultsPage({
       ? searchParams.mbti[0].toUpperCase()
       : searchParams.mbti.toUpperCase()
     : null;
-
+  const openUrl = useOpenUrl();
   const result = mbti ? mbtiToArchetype[mbti] : null;
   const { savePersonality, isSaving } = usePsychswap();
   const router = useRouter();
@@ -120,6 +124,23 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
     } catch (err) {
       console.error("Cast share failed:", err);
     }
+  };
+
+  const handleShareOnX = (mbti: string) => {
+    const archetype = mbtiToArchetype[mbti];
+
+    const text = encodeURIComponent(
+      `I just discovered my personality type: ${mbti} → ${archetype.name}! 🚀
+  Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/psychswap`,
+    );
+
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+
+    // ✅ Open inside Farcaster Mini App (preferred)
+    openUrl(url);
+
+    // or fallback if not inside Farcaster
+    // window.open(url, "_blank");
   };
   return (
     <div className="min-h-screen">
@@ -239,13 +260,20 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
             </Button>
           </Link>
         </div>
-        <div className="flex flex-col justify-center mt-5">
+        <div className="flex flex-col gap-3 justify-center mt-5">
           <Button
             size="lg"
-            className="w-full border-1 bg-purple-400 shadow-purple-100 text-white"
+            className="w-full border-1 bg-purple-400  text-white"
             onClick={handleShare}
           >
-            <SiFarcaster /> Share on Farcaster
+            <SiFarcaster /> Cast on Farcaster
+          </Button>
+          <Button
+            size="lg"
+            className="w-full border-1 bg-black text-white"
+            onClick={() => handleShareOnX(mbti)}
+          >
+            <SiX /> Share on X
           </Button>
         </div>
 
