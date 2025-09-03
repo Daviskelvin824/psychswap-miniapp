@@ -45,7 +45,7 @@ export const usePsychswap = () => {
 
     try {
       // await ensureBaseSepolia(); // ✅ make sure wallet is on Base Sepolia
-
+      await ensureBase();
       toast.loading("Saving personality...", { id: "psychswap" });
       const hash = await writeContractAsync({
         address: CONTRACTS.PSYCHSWAP,
@@ -113,6 +113,44 @@ async function ensureBaseSepolia() {
               },
               rpcUrls: ["https://sepolia.base.org"],
               blockExplorerUrls: ["https://sepolia.basescan.org"],
+            },
+          ],
+        });
+      }
+    }
+  }
+}
+
+async function ensureBase() {
+  if (!window.ethereum) return;
+
+  const currentChainId = await window.ethereum.request({
+    method: "eth_chainId",
+  });
+
+  if (currentChainId !== `0x${base.id.toString(16)}`) {
+    try {
+      // Try switching
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: `0x${base.id.toString(16)}` }], // 0x2105
+      });
+    } catch (switchError: any) {
+      // If not added yet, add Base
+      if (switchError.code === 4902) {
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: `0x${base.id.toString(16)}`,
+              chainName: "Base",
+              nativeCurrency: {
+                name: "Ethereum",
+                symbol: "ETH",
+                decimals: 18,
+              },
+              rpcUrls: ["https://mainnet.base.org"],
+              blockExplorerUrls: ["https://basescan.org"],
             },
           ],
         });
