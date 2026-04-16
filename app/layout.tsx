@@ -18,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: "Swap based on your Personality!",
     icons: "/psychswap-icon.png",
     other: {
+      "base:app_id": "69dfb462c7b32f33c46185fe",
       "fc:frame": JSON.stringify({
         version: "next",
         imageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE,

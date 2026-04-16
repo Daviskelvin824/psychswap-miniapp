@@ -73,7 +73,6 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
       });
     } catch (err) {
       console.error("Cast share failed:", err);
-    }
   };
 
   const handleShareOnX = (mbti: string) => {
@@ -120,7 +119,7 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
           type="to"
           className=""
         />
-        <SwapButton className="bg-orange-300" />
+        <SwapButton className="bg-orange-300 " />
         <SwapMessage />
         <SwapToast />
       </Swap>
@@ -207,7 +206,8 @@ Take the test and see yours 👇\nhttps://farcaster.xyz/miniapps/2lasIRFKhdCj/ps
           ) : (
             <div className="text-center py-10">
               <p className="text-gray-500">
-                Could not load a recommendation for your personality type.
+                Could not load a recommendation for your personality type. but
+                wha tis the
               </p>
             </div>
           )
